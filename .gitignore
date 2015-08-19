@@ -1,0 +1,32 @@
+## ignore Rhistory
+.Rhistory
+
+
+## emacs produces ~data
+~*
+*~
+\#*
+
+## .RData files
+help.RData
+help.Rdata
+
+
+## the whole ./R/ directory including the .Rd files
+unitedR/man
+unitedR/*.pdf
+
+## the unnecessary vignette files
+unitedR/vignettes/*.pdf
+unitedR/vignettes/*.tex
+unitedR/vignettes/*.toc
+unitedR/vignettes/*.gz
+unitedR/vignettes/*.xml
+unitedR/vignettes/*.log
+unitedR/vignettes/*.bbl
+unitedR/vignettes/*.csv
+
+
+## the binary files which contain the package
+*.zip
+*.tar.gz

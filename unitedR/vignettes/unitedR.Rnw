@@ -1,0 +1,31 @@
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{unitedR}
+\documentclass[11pt]{article}
+\usepackage{graphicx, verbatim}
+\author{David Schindler, Daniel Horn, Markus Terh\"urne, Stefan Meinke}
+\begin{document}
+
+
+\title{Get started with \texttt{unitedR}}
+\date{\today}
+\maketitle
+
+
+\section{Introduction}
+This package provides functionality for simulation line ups in United. It 
+contains functions for computing optimal formations to beat all opponents in the game.
+
+This document will introduce you to the usage of the package \texttt{unitedR} and 
+its functions and features.
+
+You can install \texttt{unitedR} from \dots
+
+<<first, echo=TRUE>>=
+require(unitedR)
+@
+
+Here is some exemplary code:
+<<>>=
+#unitedSim("hi")
+@
+\end{document}

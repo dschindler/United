@@ -1,0 +1,22 @@
+Package: unitedR
+Title: unitedR- Assessment and Evaluation of formations in United
+Version: 0.1
+Authors@R: "Markus Terhuerne <m.terhuerne@gmail.com> [aut]"
+    "David Schindler <dv.schindler@gmail.com> [aut, cre]"
+Description: This package helps to find the optimal formation for United.
+Depends:
+    R (>= 3.1.2),
+    methods
+License: GPL (>=2)
+LazyData: true
+Collate:
+    'simRedCard.R'
+    'getLineup.R'
+    'formation.R'
+    'unitedRPackage.R'
+    'unitedRoverview.R'
+    'unitedSim.R'
+Suggests:
+    testthat,
+    knitr
+VignetteBuilder: knitr
