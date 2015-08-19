@@ -39,15 +39,15 @@ unitedSim <- function(home, away, r) {
   awayLineup <- getLineup(away)
   
   # simulate red cards
-  homeLineupCorrect <- simRedCard(home, homeLineup)
-  awayLineupCorrect <- simRedCard(away, awayLineup)
+  homeLineupSim <- simRedCard(home, homeLineup)
+  awayLineupSim <- simRedCard(away, awayLineup)
   
-  chancesHome <- round((homeLineupCorrect[3:5] - awayLineupCorrect[5:3] - 
-                          c(0, 0, awayLineupCorrect[2])) * c(1/4, 1/2, 1))
+  chancesHome <- round((homeLineupSim[3:5] - awayLineupSim[5:3] - 
+                          c(0, 0, awayLineupSim[2])) * c(1/4, 1/2, 1))
   chancesHome <- sum(chancesHome[chancesHome > 0])
   
-  chancesAway <- round((awayLineupCorrect[3:5] - homeLineupCorrect[5:3] - 
-                          c(0, 0, homeLineupCorrect[2])) * c(1/4, 1/2, 1))
+  chancesAway <- round((awayLineupSim[3:5] - homeLineupSim[5:3] - 
+                          c(0, 0, homeLineupSim[2])) * c(1/4, 1/2, 1))
   chancesAway <- sum(chancesAway[chancesAway > 0])
   
   
