@@ -27,6 +27,8 @@ NULL
 #'  hardness = c(0,0,0,0,1))
 #' set.seed(123)
 #' unitedSimOne(home, away)
+#' # you can even simulated the game
+#' unitedSimOne(home, away, r = 100)
 #' 
 #' @export
 unitedSimOne <- function(home, away, r) {
@@ -34,7 +36,7 @@ unitedSimOne <- function(home, away, r) {
             is(home, "formation"))
   if (missing(r)) {
     if (sum(home@hardness) > 1 || sum(away@hardness > 1)) {
-      warning("You should simulate hardness and penalties, calculations are not exact.")
+      warning("It is recommended to simulate hardness and penalties, calculations are exact for one possible lineup.")
     }
     
     homeLineup <- getLineup(home)
@@ -140,10 +142,9 @@ unitedSimOne <- function(home, away, r) {
     # include red Cards when simulating
   } else {
     stopifnot(is.numeric(r), round(r) == r, length(r) == 1)
-    sapply(1:r,function(x) { 
-              homeLineup <- getLineup(home)
-              awayLineup <- getLineup(away)
-              
+    homeLineup <- getLineup(home)
+    awayLineup <- getLineup(away)
+    simulatedResults <- t(sapply(1:r, function(x) { 
               # simulate red cards
               homeLineupSim <- simRedCard(home, homeLineup)
               awayLineupSim <- simRedCard(away, awayLineup)
@@ -156,16 +157,68 @@ unitedSimOne <- function(home, away, r) {
                                       c(0, 0, homeLineupSim[2])) * c(1/4, 1/2, 1))
               chancesAway <- sum(chancesAway[chancesAway > 0])
               
-              # possible penalties home
-              posPenaltiesHome <- sum(away@hardness)
-              posPenaltiesAway <- sum(home@hardness)
+              #  penalties home
+              penaltiesHome <- rbinom(1, sum(away@hardness), 0.1)
+              penaltiesAway <- rbinom(1, sum(home@hardness), 0.1)
               
-              # probability of a goal of a penalty
+              # probability of a goal by penalty
               penaltyProbGoalHome <- 1 - (awayLineupSim[1] * 0.05)
               penaltyProbGoalAway <- 1 - (homeLineupSim[1] * 0.05)
               
-              return(awayLineupSim)
+              # probability of a goal with a chance
+              probGoalAway <- (1-homeLineupSim[1]/15) * (1-homeLineupSim[2]/14)
+              probGoalHome <- (1-awayLineupSim[1]/15) * (1-awayLineupSim[2]/14)
+              
+              # simulate the game
+              penaltyGoalsHome <- rbinom(1, penaltiesHome, penaltyProbGoalHome)
+              penaltyGoalsAway <- rbinom(1, penaltiesAway, penaltyProbGoalAway)
+              goalsHomeGame <- rbinom(1, chancesHome, probGoalHome)
+              goalsAwayGame <- rbinom(1, chancesAway, probGoalAway)
+              c(penaltyGoalsHome + goalsHomeGame, penaltyGoalsAway + goalsAwayGame)
       }
-    ) 
-  
+    ))
+    simulatedResults <- as.data.frame(simulatedResults)
+    colnames(simulatedResults) <- c("goalsHome", "goalsAway")
+    simulatedResults$probability <- 1/r
+    
+    simulatedResults <- ddply(simulatedResults, .(goalsHome, goalsAway), summarize, 
+                                  probability = sum(probability))
+    
+    # sort results by probability of apprearance
+    simulatedResults <- simulatedResults[order(simulatedResults$probability, decreasing = TRUE), ]
+    # add a cumsum of the probabilities
+    simulatedResults$cumsumProb <- cumsum(simulatedResults$probability)
+    # add points for home
+    simulatedResults$pointsHome <- ifelse(simulatedResults$goalsHome > simulatedResults$goalsAway, 3, 
+                                              ifelse(simulatedResults$goalsHome == simulatedResults$goalsAway, 1,
+                                                     0))
+    # add points for away
+    simulatedResults$pointsAway <- ifelse(simulatedResults$goalsHome < simulatedResults$goalsAway, 3, 
+                                              ifelse(simulatedResults$goalsHome == simulatedResults$goalsAway, 1, 
+                                                     0))
+    # add training points (TP) for home
+    simulatedResults$tpHome <- ifelse(simulatedResults$goalsHome > simulatedResults$goalsAway, 1, 
+                                          ifelse(simulatedResults$goalsHome == simulatedResults$goalsAway, 0.5, 
+                                                 0))
+    # add traings points (TP) for away
+    simulatedResults$tpAway <- ifelse(simulatedResults$goalsHome < simulatedResults$goalsAway, 1, 
+                                          ifelse(simulatedResults$goalsHome == simulatedResults$goalsAway, 0.5, 
+                                                 0))
+    # output
+    output <- new("unitedSimR", 
+                  results = simulatedResults, 
+                  averageTrainingPointsHome = round(sum(simulatedResults$tpHome * simulatedResults$probability), digits = 4),
+                  averageTrainingPointsAway = round(sum(simulatedResults$tpAway * simulatedResults$probability), digits = 4), 
+                  averagePointsHome = round(sum(simulatedResults$pointsHome * simulatedResults$probability), digits = 4),
+                  averagePointsAway = round(sum(simulatedResults$pointsAway * simulatedResults$probability), digits = 4),
+                  winProbabilityHome = round(sum((simulatedResults$pointsHome == 3) * simulatedResults$probability), digits = 4),
+                  winProbabilityAway = round(sum((simulatedResults$pointsAway == 3) * simulatedResults$probability), digits = 4), 
+                  tiedProbability = round(sum((simulatedResults$pointsAway == 1) * simulatedResults$probability), digits = 4),
+                  r = r,
+                  home = home,
+                  away = away)
+    
+    return(output)
+  }
 }
+  

@@ -27,27 +27,39 @@ NULL
 #'  hardness = c(0,0,0,0,1))
 #' set.seed(123)
 #' unitedSim(home, away)
+#' # can also be simualated
+#' unitedSim(home, away, r = 100)
+#' # several away lineups
 #' unitedSim(home, away, away)
+#' # several away lineups simulated
+#' unitedSim(home, away, away, r = 100)
 #' 
 #' @export
 unitedSim <- function(home, ..., r) {
   stopifnot(validObject(home), is(home, "formation"))
+  formations <- list(...)
+  if (!all(sapply(formations, function(x)  is(x, "formation"))))
+    stop("Not all ... objects of class formation.")
   if (missing(r)) {
-    formations <- list(...)
-    if (!all(sapply(formations, function(x)  is(x, "formation"))))
-      stop("Not all ... objects of class formation.")
-  
     if (length(formations) == 1) {
-      return(unitedSimOne(home, formations[[1]], r = r))
+      return(unitedSimOne(home, formations[[1]]))
     } else {
       games <- lapply(formations, function(formation) {
-          unitedSimOne(home, formation, r = r)  
+          unitedSimOne(home, formation)  
         }
       )
     }
     return(new("unitedSimResults", games = games))
   } else {
     stopifnot(is.numeric(r), round(r) == r, length(r) == 1)
-    
+      if (length(formations) == 1) {
+        return(unitedSimOne(home, formations[[1]], r = r))
+      } else {
+        games <- lapply(formations, function(formation) {
+          unitedSimOne(home, formation, r = r)  
+        }
+      )
+    }
+    return(new("unitedSimResults", games = games))
   }  
 }

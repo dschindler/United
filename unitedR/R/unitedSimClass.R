@@ -34,6 +34,15 @@ setClass("unitedSim",
 
 
 # --------------------------------------------
+# Class definition for unitedSimR
+# --------------------------------------------
+
+# Randomization paramters generic
+setClass("unitedSimR",
+         slots = c(r = "numeric"),
+         contains = "unitedSim")
+
+# --------------------------------------------
 # Methods for unitedSim
 # --------------------------------------------
 
@@ -86,7 +95,40 @@ setMethod("show", "unitedSim", function(object) {
     for (name in names) {
       cat("\t", name, "=", slot(object, name), "\n")
     }
-    cat("\nMost probable results are:\n\n") 
+    cat("\nThe most probable results are:\n\n") 
+    if (nrow(object@results >= 6)) {
+      print(round(object@results[1:6, 1:4], digits = 3), row.names = FALSE)
+    } else {
+      print(round(object@results[, 1:4], digits = 3), row.names = FALSE)
+    }  
+    cat("\n")
+  }  
+)
+
+
+# --------------------------------------------
+# Show function for unitedSim
+# --------------------------------------------
+
+setMethod("show", "unitedSimR", function(object) {
+    # iterate through all slots of the object
+    cat("\n")
+    cat("Used lineup home was:\n")
+    lineupHome <- toString(getLineup(object@home))
+    lineupHome <- gsub(", ", "-", lineupHome)
+    cat("\t", lineupHome)
+    cat("\n")
+    cat("Used lineup away was:\n")
+    lineupAway <- toString(getLineup(object@away))
+    lineupAway <- gsub(", ", "-", lineupAway)
+    cat("\t", lineupAway)
+    cat("\n\nThe key statistcs based on", object@r,"simulations are:\n")
+    names <- slotNames(object)
+    names <- names[!(names %in% c("results", "home", "away", "r"))]
+    for (name in names) {
+      cat("\t", name, "=", slot(object, name), "\n")
+    }
+    cat("\nThe most probable results are:\n\n") 
     if (nrow(object@results >= 6)) {
       print(round(object@results[1:6, 1:4], digits = 3), row.names = FALSE)
     } else {
