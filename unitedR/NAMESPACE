@@ -2,6 +2,10 @@
 
 export(formation)
 export(getLineup)
+export(penaltyGoalsProb)
 export(simRedCard)
+export(summary)
 export(unitedSim)
+export(unitedSimOne)
 import(methods)
+import(plyr)

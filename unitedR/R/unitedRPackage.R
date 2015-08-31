@@ -19,4 +19,5 @@
 #' @author David Schindler \email{dv.schindler@@gmail.com}, Markus Terhuerne \email{m.terhuerne@@gmail.com}
 #' @references Unkown
 #' @import methods
+#' @import plyr
 NULL

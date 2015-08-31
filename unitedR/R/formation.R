@@ -168,7 +168,7 @@ validateFormation <- function(object) {
 # Class definition for formation
 # --------------------------------------------
 
-# Randomization paramters generic
+# formation class
 setClass("formation",
          slots = c(GK = "numeric", SW = "vector", DF = "numeric", 
                    MF = "numeric", ST = "numeric",
@@ -344,7 +344,7 @@ setMethod("simRedCard",
                 }
                   
               }
-            return(lineup)
+              return(lineup)
             }
           }
 )  

@@ -13,7 +13,9 @@
 #' @param homeAdv home advantage
 #' @param MF \code{numeric} vector for the strengths of the players in the 
 #' midfield
-#' @param r number of replications for the simulation of hardness
+#' @param penaltyGoalProb probability of a goal by a singular penalty
+#' @param posPenalties number of possible penalties in a game
+#' @param r number of replications for the simulation of hardness and penalties
 #' @param ST \code{numeric} vector of integers for the strenghts of the strikers
 #' @param SW \code{vector} for the strength of the sweeper, can be 
 #' \code{NA} or a \code{numeric}

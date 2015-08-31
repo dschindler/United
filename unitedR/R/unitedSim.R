@@ -1,9 +1,10 @@
-#' @include formation.R
+#' @include unitedSimOne.R
+#' @include unitedSimResults.R
 NULL
 
 ###############################################
 # --------------------------------------------#
-# unitedSim                                    #
+# unitedSim                                   #
 # --------------------------------------------#
 ###############################################
 
@@ -13,47 +14,40 @@ NULL
 
 #' Simulating a formation
 #' 
-#' Simulates a formation against another formation.
+#' Simulates a formation against another formations (several formations of away are possible).
 #' 
 #' @inheritParams overview
+#' @param ... several objects of the class \code{formation}
 #'
 #' @return Creates an object of the \code{unitedSim} class.
 #' 
 #' @examples 
-#' Home <- formation(10, NA, c(7,5,3), c(8,8), c(10,10,8))
-#' Away <- formation(5, 8, c(8,8), c(10,10), c(10,10,10), 
-#'  hardness = c(0,0,0,0,10))
+#' home <- formation(10, NA, c(7,5,3), c(8,8), c(10,10,8))
+#' away <- formation(5, 8, c(8,8), c(10,10), c(10,10,10), 
+#'  hardness = c(0,0,0,0,1))
 #' set.seed(123)
-#' unitedSim(Home, Away)
+#' unitedSim(home, away)
+#' unitedSim(home, away, away)
 #' 
-#'
 #' @export
-unitedSim <- function(home, away, r) {
-  stopifnot(validObject(home), validObject(away), is(home, "formation"), 
-            is(home, "formation"))
+unitedSim <- function(home, ..., r) {
+  stopifnot(validObject(home), is(home, "formation"))
   if (missing(r)) {
-    r <- 1
-  }
-  stopifnot(is.numeric(r), round(r) == r, length(r) == 1)
-  homeLineup <- getLineup(home)
-  awayLineup <- getLineup(away)
+    formations <- list(...)
+    if (!all(sapply(formations, function(x)  is(x, "formation"))))
+      stop("Not all ... objects of class formation.")
   
-  # simulate red cards
-  homeLineupSim <- simRedCard(home, homeLineup)
-  awayLineupSim <- simRedCard(away, awayLineup)
-  
-  chancesHome <- round((homeLineupSim[3:5] - awayLineupSim[5:3] - 
-                          c(0, 0, awayLineupSim[2])) * c(1/4, 1/2, 1))
-  chancesHome <- sum(chancesHome[chancesHome > 0])
-  
-  chancesAway <- round((awayLineupSim[3:5] - homeLineupSim[5:3] - 
-                          c(0, 0, homeLineupSim[2])) * c(1/4, 1/2, 1))
-  chancesAway <- sum(chancesAway[chancesAway > 0])
-  
-  
-  
-  list(chancesAway = chancesAway, chancesHome = chancesHome)
-  
-  # simulate penalties
-  
+    if (length(formations) == 1) {
+      return(unitedSimOne(home, formations[[1]], r = r))
+    } else {
+      games <- lapply(formations, function(formation) {
+          unitedSimOne(home, formation, r = r)  
+        }
+      )
+    }
+    return(new("unitedSimResults", games = games))
+  } else {
+    stopifnot(is.numeric(r), round(r) == r, length(r) == 1)
+    
+  }  
 }
