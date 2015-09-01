@@ -3,6 +3,8 @@
 #' @include unitedSimClass.R
 NULL
 
+utils::globalVariables(c("goalsHome", "goalsAway", "probability"))
+
 ###############################################
 # --------------------------------------------#
 # unitedSimOne                                #
@@ -100,7 +102,7 @@ unitedSimOne <- function(home, away, r) {
   
     # merge the data.frames
     finalPossibleResults <- do.call("rbind", allResWithPen)
-  
+    
     finalPossibleResults <- ddply(finalPossibleResults, .(goalsHome, goalsAway), summarize, 
                                 probability = sum(probability))
   
