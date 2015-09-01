@@ -95,8 +95,8 @@ setMethod("show", "unitedSim", function(object) {
     for (name in names) {
       cat("\t", name, "=", slot(object, name), "\n")
     }
-    cat("\nThe most probable results are:\n\n") 
-    if (nrow(object@results >= 6)) {
+    cat("\nThe most probable results are:\n") 
+    if (nrow(object@results) >= 6) {
       print(round(object@results[1:6, 1:4], digits = 3), row.names = FALSE)
     } else {
       print(round(object@results[, 1:4], digits = 3), row.names = FALSE)
@@ -128,8 +128,8 @@ setMethod("show", "unitedSimR", function(object) {
     for (name in names) {
       cat("\t", name, "=", slot(object, name), "\n")
     }
-    cat("\nThe most probable results are:\n\n") 
-    if (nrow(object@results >= 6)) {
+    cat("\nThe most probable results are:\n") 
+    if (nrow(object@results) >= 6) {
       print(round(object@results[1:6, 1:4], digits = 3), row.names = FALSE)
     } else {
       print(round(object@results[, 1:4], digits = 3), row.names = FALSE)

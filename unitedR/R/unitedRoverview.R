@@ -15,7 +15,8 @@
 #' midfield
 #' @param penaltyGoalProb probability of a goal by a singular penalty
 #' @param posPenalties number of possible penalties in a game
-#' @param r number of replications for the simulation of hardness and penalties
+#' @param r number of replications for the simulation of hardness and penalties, can 
+#' be \code{missing} (exact results will be computed)
 #' @param ST \code{numeric} vector of integers for the strenghts of the strikers
 #' @param SW \code{vector} for the strength of the sweeper, can be 
 #' \code{NA} or a \code{numeric}

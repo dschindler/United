@@ -150,11 +150,11 @@ validateFormation <- function(object) {
     errors <- c(errors, msg)
   }
   
-  if (sum(hard) > 0 && sum(hard) < 11) {
+  if (sum(hard) > 1 && sum(hard) < 11) {
     for (param in c("DF", "MF", "ST")) {
       obj <- eval(parse(text = param))
-      if (!(all(round(obj) < 13))) {
-        msg <- paste("All players in ", param, " should be weaker than 13.",
+      if (!(all(round(obj) <= 13))) {
+        msg <- paste("All players in ", param, " should be weaker than 14.",
                      sep = "", collapse = ",")
         errors <- c(errors, msg)
       }
@@ -271,8 +271,8 @@ setMethod("simRedCard",
                              10,30,40,20,0,0,0,0,0,20,40,30,10,0,0,0,0,10,20,
                              40,20,10,0,0,0,0,10,40,20,20,10), nrow = 8)
             sumHard <- sum(obj@hardness)
-            greaterZero <- which(Hard[,sumHard+1] > 0)
-            numberCards <- sample(greaterZero, 1, prob = Hard[,sumHard+1][greaterZero]) - 1
+            greaterZero <- which(Hard[ ,sumHard+1] > 0)
+            numberCards <- sample(greaterZero, 1, prob = Hard[ ,sumHard+1][greaterZero]) - 1
             if (numberCards <= 1) {
               return(lineup)
             }
