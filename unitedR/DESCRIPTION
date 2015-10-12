@@ -1,9 +1,9 @@
 Package: unitedR
-Title: unitedR- Assessment and Evaluation of formations in United
+Title: Assessment and Evaluation of Formations in United
 Version: 0.1
-Authors@R: "Markus Terhuerne <m.terhuerne@gmail.com> [aut]"
-    "David Schindler <dv.schindler@gmail.com> [aut, cre]"
-Description: This package helps to find the optimal formation for united.
+Authors@R: person(given="David", family="Schindler", email="dv.schindler@gmail.com", role=c("aut","cre"))
+Description: Determining the optimal formation for a match in United. What
+    United is about can be looked up at e.g. \href{http://www.omido.de/}.
 Depends:
     R (>= 3.1.2),
     methods,

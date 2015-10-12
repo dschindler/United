@@ -1,0 +1,13 @@
+formation               Representing a formation
+getLineup,formation-method
+                        Lineup of a united formation
+overview                Overview over the parameters used in the
+                        'unitedR' package
+penaltyGoalsProb        Computing goals by united
+simRedCard,formation,numeric-method
+                        Simulate red card(s)
+summary                 Summary of assessments of a randomization
+                        procedure
+unitedR-package         Assessment and Evaluation of United Formations
+unitedSim               Simulating a formation
+unitedSimOne            Simulating a formation
