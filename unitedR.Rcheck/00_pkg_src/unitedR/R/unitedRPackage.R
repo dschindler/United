@@ -10,7 +10,7 @@
 #' }
 #' 
 #' This package provides functionality for the assessment of lineups and formations in United. The rules for
-#' United in detail can be found under: \href{http://www.omido.de/ng/fm/fm_regeln.php}{omido-rules}. 
+#' United in detail can be found under: \href{http://www.schroepl.net/pbm/software/united/_dokument/handbuch.htm}{United-rules}. 
 #' 
 #' 
 #' @docType package
@@ -18,7 +18,7 @@
 #' @aliases unitedR
 #' @title Assessment and Evaluation of United Formations
 #' @author David Schindler \email{dv.schindler@@gmail.com}
-#' @references \href{http://www.omido.de/}{omido}
+#' @references \href{http://www.omido.de/}{omido} \href{http://www.schroepl.net/pbm/software/united/}{United}
 #' @import methods
 #' @importFrom stats dbinom rbinom
 #' @import plyr

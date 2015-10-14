@@ -211,7 +211,7 @@ The most probable results are:
 > ###
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  0.5 0.02 0.51 NA NA 
+Time elapsed:  0.52 0 0.52 NA NA 
 > grDevices::dev.off()
 null device 
           1 

@@ -2,8 +2,13 @@ Package: unitedR
 Title: Assessment and Evaluation of Formations in United
 Version: 0.1
 Authors@R: person(given="David", family="Schindler", email="dv.schindler@gmail.com", role=c("aut","cre"))
-Description: Determining the optimal formation for a match in United. What
-    United is about can be looked up at e.g. \href{http://www.omido.de/}.
+Description: United is a software tool which can be downloaded at http://
+    www.schroepl.net/pbm/software/united/. In general, it is a virtual manager
+    game for football teams. The package unitedR contains helpful functions for
+    determining an optimal formation for a virtual match in United. E.g. knowing
+    that the opponent has a strong defensive it is advisable to beat him in the
+    midfield. Furthermore, unitedR contains functions for computing the optimal
+    usage of hardness in a game.
 Depends: R (>= 3.1.2), methods, plyr
 License: GPL (>=2)
 LazyData: true
@@ -14,7 +19,7 @@ Collate: 'simRedCard.R' 'getLineup.R' 'formation.R'
 Suggests: testthat, knitr
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2015-10-12 10:54:07 UTC; David Schindler
+Packaged: 2015-10-13 09:44:44 UTC; David Schindler
 Author: David Schindler [aut, cre]
 Maintainer: David Schindler <dv.schindler@gmail.com>
-Built: R 3.2.2; ; 2015-10-12 10:54:54 UTC; windows
+Built: R 3.2.2; ; 2015-10-13 09:46:07 UTC; windows

@@ -5,8 +5,25 @@
 * using option '--as-cran'
 * checking for file 'unitedR/DESCRIPTION' ... OK
 * this is package 'unitedR' version '0.1'
-* checking CRAN incoming feasibility ... Note_to_CRAN_maintainers
+* checking CRAN incoming feasibility ... NOTE
 Maintainer: 'David Schindler <dv.schindler@gmail.com>'
+New submission
+Found the following (possibly) invalid URLs:
+  URL: http://www.omido.de/
+    From: man/unitedR-package.Rd
+    Status: Error
+    Message: libcurl Fehlercode 7
+    \tFailed to connect to www.omido.de port 80: Timed out
+  URL: http://www.schroepl.net/pbm/software/united/
+    From: man/unitedR-package.Rd
+    Status: Error
+    Message: libcurl Fehlercode 7
+    \tFailed to connect to www.schroepl.net port 80: Timed out
+  URL: http://www.schroepl.net/pbm/software/united/_dokument/handbuch.htm
+    From: man/unitedR-package.Rd
+    Status: Error
+    Message: libcurl Fehlercode 7
+    \tFailed to connect to www.schroepl.net port 80: Timed out
 * checking package namespace information ... OK
 * checking package dependencies ... NOTE
   No repository set, so cyclic dependency check skipped
@@ -61,4 +78,4 @@ Maintainer: 'David Schindler <dv.schindler@gmail.com>'
 * checking re-building of vignette outputs ... OK
 * checking PDF version of manual ... OK
 * DONE
-Status: 1 WARNING, 1 NOTE
+Status: 1 WARNING, 2 NOTEs
