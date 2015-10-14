@@ -53,11 +53,11 @@ unitedSimOne <- function(home, away, r, preventGoalGK = 1/14, preventGoalSW = 1/
     awayLineupSim <- simRedCard(away, awayLineup)
   
     chancesHome <- round((homeLineupSim[3:5] - awayLineupSim[5:3] - 
-                          c(0, 0, awayLineupSim[2])) * c(1/4, 1/2, 1))
+                          c(0, 0, awayLineupSim[2])) * c(1/4, 1/2, 1) + 0.00001)
     chancesHome <- sum(chancesHome[chancesHome > 0])
   
     chancesAway <- round((awayLineupSim[3:5] - homeLineupSim[5:3] - 
-                          c(0, 0, homeLineupSim[2])) * c(1/4, 1/2, 1))
+                          c(0, 0, homeLineupSim[2])) * c(1/4, 1/2, 1) + 0.00001)
     chancesAway <- sum(chancesAway[chancesAway > 0])
   
     # possible penalties home
