@@ -175,8 +175,8 @@ unitedSimOne <- function(home, away, r, penaltyProb = 0.1, preventGoalGK = 1/14,
               chancesAway <- sum(chancesAway[chancesAway > 0])
               
               #  penalties home
-              penaltiesHome <- rbinom(1, sum(away@hardness), 0.1)
-              penaltiesAway <- rbinom(1, sum(home@hardness), 0.1)
+              penaltiesHome <- rbinom(1, sum(away@hardness), penaltyProb)
+              penaltiesAway <- rbinom(1, sum(home@hardness), penaltyProb)
               
               # probability of a goal by penalty
               penaltyProbGoalHome <- 1 - (awayLineupSim[1] * 0.05)
