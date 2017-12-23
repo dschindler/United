@@ -14,6 +14,7 @@
 #' @param MF \code{numeric} vector for the strengths of the players in the 
 #' midfield
 #' @param penaltyGoalProb probability of a goal by a singular penalty
+#' @param penaltyProb occurrence probability of a penalty
 #' @param posPenalties number of possible penalties in a game
 #' @param preventGoalGK factor multiplicied with the strength of the GK for computing the 
 #' probability of preventing a goal by the goalkeeper

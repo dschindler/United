@@ -1,6 +1,6 @@
 Package: unitedR
 Title: Assessment and Evaluation of Formations in United
-Version: 0.1.9000
+Version: 0.2.9000
 Authors@R: person(given="David", family="Schindler", email="dv.schindler@gmail.com", role=c("aut","cre"))
 Description: United is a software tool which can be downloaded at the following
     website <http://www.schroepl.net/pbm/software/united/>. In general, it is
@@ -31,3 +31,4 @@ Suggests:
     testthat,
     knitr
 VignetteBuilder: knitr
+RoxygenNote: 6.0.1

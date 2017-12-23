@@ -35,17 +35,17 @@ NULL
 #' unitedSim(home, away, away, r = 100)
 #' 
 #' @export
-unitedSim <- function(home, ..., r, preventGoalGK = 1/14, preventGoalSW = 1/15) {
+unitedSim <- function(home, ..., r, penaltyProb = 0.1, preventGoalGK = 1/14, preventGoalSW = 1/15) {
   stopifnot(validObject(home), is(home, "formation"))
   formations <- list(...)
   if (!all(sapply(formations, function(x)  is(x, "formation"))))
     stop("Not all ... objects of class formation.")
   if (missing(r)) {
     if (length(formations) == 1) {
-      return(unitedSimOne(home, formations[[1]], preventGoalGK = preventGoalGK, preventGoalSW = preventGoalSW))
+      return(unitedSimOne(home, formations[[1]], penaltyProb = penaltyProb, preventGoalGK = preventGoalGK, preventGoalSW = preventGoalSW))
     } else {
       games <- lapply(formations, function(formation) {
-          unitedSimOne(home, formation, preventGoalGK = preventGoalGK, preventGoalSW = preventGoalSW)  
+          unitedSimOne(home, formation, penaltyProb = penaltyProb, preventGoalGK = preventGoalGK, preventGoalSW = preventGoalSW)  
         }
       )
     }
@@ -53,10 +53,10 @@ unitedSim <- function(home, ..., r, preventGoalGK = 1/14, preventGoalSW = 1/15) 
   } else {
     stopifnot(is.numeric(r), round(r) == r, length(r) == 1)
       if (length(formations) == 1) {
-        return(unitedSimOne(home, formations[[1]], r = r, preventGoalGK = preventGoalGK, preventGoalSW = preventGoalSW))
+        return(unitedSimOne(home, formations[[1]], r = r, penaltyProb = penaltyProb, preventGoalGK = preventGoalGK, preventGoalSW = preventGoalSW))
       } else {
         games <- lapply(formations, function(formation) {
-          unitedSimOne(home, formation, r = r, preventGoalGK = preventGoalGK, preventGoalSW = preventGoalSW)  
+          unitedSimOne(home, formation, r = r, penaltyProb = penaltyProb, preventGoalGK = preventGoalGK, preventGoalSW = preventGoalSW)  
         }
       )
     }

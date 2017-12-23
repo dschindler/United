@@ -33,7 +33,7 @@ utils::globalVariables(c("goalsHome", "goalsAway", "probability"))
 #' unitedSimOne(home, away, r = 100)
 #' 
 #' @export
-unitedSimOne <- function(home, away, r, preventGoalGK = 1/14, preventGoalSW = 1/15) {
+unitedSimOne <- function(home, away, r, penaltyProb = 0.1, preventGoalGK = 1/14, preventGoalSW = 1/15) {
   stopifnot(validObject(home), validObject(away), is(home, "formation"), 
             is(home, "formation"), is.numeric(preventGoalGK), is.numeric(preventGoalSW))
   if (preventGoalGK >= 1/13) stop("preventGoalGK must be smaller than 1/13.")
@@ -69,8 +69,8 @@ unitedSimOne <- function(home, away, r, preventGoalGK = 1/14, preventGoalSW = 1/
     penaltyProbGoalAway <- 1 - (homeLineupSim[1] * 0.05)
   
     # probability distribution of all possible goals by penalties for both teams
-    goalsPenaltyDistrHome <- penaltyGoalsProb(posPenaltiesHome, penaltyProbGoalHome)
-    goalsPenaltyDistrAway <- penaltyGoalsProb(posPenaltiesAway, penaltyProbGoalAway)
+    goalsPenaltyDistrHome <- penaltyGoalsProb(posPenaltiesHome, penaltyProbGoalHome, penaltyProb)
+    goalsPenaltyDistrAway <- penaltyGoalsProb(posPenaltiesAway, penaltyProbGoalAway, penaltyProb)
   
     # possible allocations of the penalties
     penaltyAllocations <- expand.grid(home = 0:posPenaltiesHome, away = 0:posPenaltiesAway)

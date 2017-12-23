@@ -1,5 +1,5 @@
 
-# setwd("D:\\David_lokal\\Github\\United")
+# setwd("C:\\Users\\David\\Desktop\\Git\\unitedR")
 
 
 library(knitr)
@@ -28,7 +28,7 @@ build(current.code)
 # if (file.exists("./unitedR.pdf")) file.remove("./unitedR.pdf")
 # system(paste('R CMD Rd2pdf ',  'unitedR'))
 
-install.packages("./unitedR_0.1.9000.tar.gz", repos = NULL, type = "source")
+install.packages("./unitedR_0.2.9000.tar.gz", repos = NULL, type = "source")
 
 
 # require(randomizeR)

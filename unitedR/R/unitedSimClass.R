@@ -89,7 +89,7 @@ setMethod("show", "unitedSim", function(object) {
     lineupAway <- toString(getLineup(object@away))
     lineupAway <- gsub(", ", "-", lineupAway)
     cat("\t", lineupAway)
-    cat("\n\nThe key statistcs are:\n")
+    cat("\n\nThe key statistics are:\n")
     names <- slotNames(object)
     names <- names[!(names %in% c("results", "home", "away"))]
     for (name in names) {
@@ -122,7 +122,7 @@ setMethod("show", "unitedSimR", function(object) {
     lineupAway <- toString(getLineup(object@away))
     lineupAway <- gsub(", ", "-", lineupAway)
     cat("\t", lineupAway)
-    cat("\n\nThe key statistcs based on", object@r,"simulations are:\n")
+    cat("\n\nThe key statistics based on", object@r,"simulations are:\n")
     names <- slotNames(object)
     names <- names[!(names %in% c("results", "home", "away", "r"))]
     for (name in names) {

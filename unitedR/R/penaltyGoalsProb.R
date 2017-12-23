@@ -22,7 +22,7 @@ NULL
 #' for achieving this number of goals.
 #'
 #' @export
-penaltyGoalsProb <- function(posPenalties, penaltyGoalProb) {
+penaltyGoalsProb <- function(posPenalties, penaltyGoalProb, penaltyProb = 0.1) {
   stopifnot(posPenalties >= 0, posPenalties < 12, round(posPenalties) == posPenalties)
   stopifnot(penaltyGoalProb >= 0, penaltyGoalProb <= 1)
   # vector for the probabilities of the goals which can be scored by penalties
@@ -33,7 +33,7 @@ penaltyGoalsProb <- function(posPenalties, penaltyGoalProb) {
       # j variable of achieved penalties
       for (j in i:posPenalties) {
         probGoals <- choose(j, i) * penaltyGoalProb^i * (1-penaltyGoalProb)^(j-i)
-        prob <- prob + choose(posPenalties, j) * 0.1^j * 0.9^(posPenalties-j) * probGoals
+        prob <- prob + choose(posPenalties, j) * penaltyProb^j * (1-penaltyProb)^(posPenalties-j) * probGoals
       }
       probs[i+1] <- prob
     }
