@@ -267,13 +267,8 @@ setMethod("getLineup",
 
 #' @rdname simRedCard
 setMethod("simRedCard", 
-          signature(obj = "formation", lineup = "numeric"),
-          function(obj, lineup) {
-            Hard <- matrix(c(90,10,0,0,0,0,0,0,70,30,0,0,0,0,0,0,50,40,10,
-                             0,0,0,0,0,30,50,20,0,0,0,0,0,20,40,30,10,0,0,
-                             0,0, 10,30,40,20,0,0,0,0,0,20,40,30,10,0,0,0,0,
-                             10,30,40,20,0,0,0,0,0,20,40,30,10,0,0,0,0,10,20,
-                             40,20,10,0,0,0,0,10,40,20,20,10), nrow = 8)
+          signature(obj = "formation", lineup = "numeric", Hard = "matrix"),
+          function(obj, lineup, Hard) {
             sumHard <- sum(obj@hardness)
             greaterZero <- which(Hard[ ,sumHard+1] > 0)
             numberCards <- sample(greaterZero, 1, prob = Hard[ ,sumHard+1][greaterZero]) - 1

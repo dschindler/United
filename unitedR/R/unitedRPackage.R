@@ -4,7 +4,7 @@
 #' Package: \tab unitedR \cr
 #' Type: \tab Package\cr
 #' Version: \tab 0.2.9000\cr
-#' Date: \tab 2014-12-18\cr
+#' Date: \tab 2017-12-23\cr
 #' License: \tab GPL (>= 2)\cr
 #' LazyLoad: \tab yes \cr
 #' }
@@ -18,7 +18,7 @@
 #' @aliases unitedR
 #' @title Assessment and Evaluation of United Formations
 #' @author David Schindler \email{dv.schindler@@gmail.com}
-#' @references \href{http://www.omido.de/}{omido} \href{http://www.schroepl.net/pbm/software/united/}{United}
+#' @references \href{http://www.omido.de/}{omido} \href{http://www.schroepl.net/pbm/software/united/}{United} \href{http://schroepl.net/projekte/united_forum/}{United-Forum}
 #' @import methods
 #' @importFrom stats dbinom rbinom
 #' @import plyr

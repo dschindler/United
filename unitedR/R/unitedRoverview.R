@@ -9,6 +9,8 @@
 #' @param formation object of the \code{S4}class \code{formation}
 #' @param GK \code{integer} for the strength goalkeeper
 #' @param hardness \code{numeric} vector of length five with integers for the used hardness
+#' @param hardnessMatrix \code{matrix} matrix with eleven columns which contain the probability 
+#' for yellow cards dependent on the used hardness
 #' @param home home team (an object of the \code{S4}class \code{formation})
 #' @param homeAdv \code{numeric} vector of length five with integers for the used hardness
 #' @param MF \code{numeric} vector for the strengths of the players in the 

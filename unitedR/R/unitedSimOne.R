@@ -33,24 +33,35 @@ utils::globalVariables(c("goalsHome", "goalsAway", "probability"))
 #' unitedSimOne(home, away, r = 100)
 #' 
 #' @export
-unitedSimOne <- function(home, away, r, penaltyProb = 0.1, preventGoalGK = 1/14, preventGoalSW = 1/15) {
+unitedSimOne <- function(home, away, r, penaltyProb = 0.1, preventGoalGK = 1/14, preventGoalSW = 1/15, 
+                         hardnessMatrix) {
   stopifnot(validObject(home), validObject(away), is(home, "formation"), 
             is(home, "formation"), is.numeric(preventGoalGK), is.numeric(preventGoalSW))
   if (preventGoalGK >= 1/13) stop("preventGoalGK must be smaller than 1/13.")
   if (preventGoalGK < 0) stop("preventGoalGK must be greater than zero.")
   if (preventGoalSW >= 1/13) stop("preventGoalSW must be smaller than 1/13.")
   if (preventGoalSW < 0) stop("preventGoalSW must be greater than zero.")
+  
+  ## set default value for hardness matrix
+  if (missing(hardnessMatrix)) {
+    hardnessMatrix <- matrix(c(90,10,0,0,0,0,0,0,70,30,0,0,0,0,0,0,50,40,10,
+                               0,0,0,0,0,30,50,20,0,0,0,0,0,20,40,30,10,0,0,
+                               0,0, 10,30,40,20,0,0,0,0,0,20,40,30,10,0,0,0,0,
+                               10,30,40,20,0,0,0,0,0,20,40,30,10,0,0,0,0,10,20,
+                               40,20,10,0,0,0,0,10,40,20,20,10), nrow = 8)
+  }
+  
   if (missing(r)) {
     if (sum(home@hardness) > 1 || sum(away@hardness > 1)) {
       warning("It is recommended to simulate hardness and penalties, calculations are exact for one possible lineup.")
     }
-    
+
     homeLineup <- getLineup(home)
     awayLineup <- getLineup(away)
   
     # simulate red cards
-    homeLineupSim <- simRedCard(home, homeLineup)
-    awayLineupSim <- simRedCard(away, awayLineup)
+    homeLineupSim <- simRedCard(home, homeLineup, hardnessMatrix)
+    awayLineupSim <- simRedCard(away, awayLineup, hardnessMatrix)
   
     chancesHome <- round((homeLineupSim[3:5] - awayLineupSim[5:3] - 
                           c(0, 0, awayLineupSim[2])) * c(1/4, 1/2, 1) + 0.00001)
@@ -152,8 +163,8 @@ unitedSimOne <- function(home, away, r, penaltyProb = 0.1, preventGoalGK = 1/14,
     awayLineup <- getLineup(away)
     simulatedResults <- t(sapply(1:r, function(x) { 
               # simulate red cards
-              homeLineupSim <- simRedCard(home, homeLineup)
-              awayLineupSim <- simRedCard(away, awayLineup)
+              homeLineupSim <- simRedCard(home, homeLineup, hardnessMatrix)
+              awayLineupSim <- simRedCard(away, awayLineup, hardnessMatrix)
               
               chancesHome <- round((homeLineupSim[3:5] - awayLineupSim[5:3] - 
                                       c(0, 0, awayLineupSim[2])) * c(1/4, 1/2, 1))
