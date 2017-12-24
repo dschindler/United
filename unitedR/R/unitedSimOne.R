@@ -41,6 +41,7 @@ unitedSimOne <- function(home, away, r, penaltyProb = 0.1, preventGoalGK = 1/14,
   if (preventGoalGK < 0) stop("preventGoalGK must be greater than zero.")
   if (preventGoalSW >= 1/13) stop("preventGoalSW must be smaller than 1/13.")
   if (preventGoalSW < 0) stop("preventGoalSW must be greater than zero.")
+  if (penaltyProb < 0 || penaltyProb > 1) stop("Probability for a penalty should be in [0,1]")
   
   ## set default value for hardness matrix
   if (missing(hardnessMatrix)) {

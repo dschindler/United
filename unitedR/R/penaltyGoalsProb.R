@@ -25,6 +25,7 @@ NULL
 penaltyGoalsProb <- function(posPenalties, penaltyGoalProb, penaltyProb = 0.1) {
   stopifnot(posPenalties >= 0, posPenalties < 12, round(posPenalties) == posPenalties)
   stopifnot(penaltyGoalProb >= 0, penaltyGoalProb <= 1)
+  stopifnot(penaltyProb >= 0, penaltyProb <= 1)
   # vector for the probabilities of the goals which can be scored by penalties
   probs <- numeric(posPenalties + 1)
   # i variable for scored goals
