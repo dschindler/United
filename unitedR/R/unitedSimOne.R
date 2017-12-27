@@ -23,6 +23,8 @@ utils::globalVariables(c("goalsHome", "goalsAway", "probability"))
 #'
 #' @return Creates an object of the \code{unitedSim} class.
 #' 
+#' @seealso \code{\link{unitedSim}}
+#' 
 #' @examples 
 #' home <- formation(10, NA, c(7,5,3), c(8,8), c(10,10,8))
 #' away <- formation(5, 8, c(8,8), c(10,10), c(10,10,10), 
