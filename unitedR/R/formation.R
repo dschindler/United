@@ -269,9 +269,18 @@ setMethod("getLineup",
 setMethod("simRedCard", 
           signature(obj = "formation", lineup = "numeric", Hard = "matrix"),
           function(obj, lineup, Hard) {
+            ## error messages if used hardness matrix is not correct
+            if (sum(obj@hardness) > ncol(Hard)) stop("Used hardness points not reflected in hardness matrix.")
+            if (!(all(apply(Hard, 2, sum) == 100))) stop("Sum of each column should be 100 of the used hardness matrix.")
+              
             sumHard <- sum(obj@hardness)
-            greaterZero <- which(Hard[ ,sumHard+1] > 0)
-            numberCards <- sample(greaterZero, 1, prob = Hard[ ,sumHard+1][greaterZero]) - 1
+            greaterZero <- as.vector(which(Hard[ ,sumHard+1] > 0))
+            if (length(greaterZero) == 1) {
+              numberCards <- greaterZero - 1
+            } else {
+              numberCards <- sample(greaterZero, 1, prob = Hard[ ,sumHard+1][greaterZero]) - 1
+            }
+            
             if (numberCards <= 1) {
               return(lineup)
             }

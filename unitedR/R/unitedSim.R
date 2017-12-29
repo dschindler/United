@@ -59,6 +59,8 @@ unitedSim <- function(home, ..., r, penaltyProb = 0.1, preventGoalGK = 1/14, pre
                                0,0,10,30,40,20,0,0,0,0,0,20,40,30,10,0,0,0,0,
                                10,30,40,20,0,0,0,0,0,20,40,30,10,0,0,0,0,10,20,
                                40,20,10,0,0,0,0,10,40,20,20,10), nrow = 8)
+  } else {
+    stopifnot(is.matrix(hardnessMatrix))
   }
   
   formations <- list(...)
