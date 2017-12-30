@@ -15,7 +15,7 @@ Depends:
     plyr
 License: GPL (>=2)
 LazyData: true
-Collate:
+Collate: 
     'simRedCard.R'
     'getLineup.R'
     'formation.R'

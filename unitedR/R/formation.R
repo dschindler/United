@@ -270,7 +270,7 @@ setMethod("simRedCard",
           signature(obj = "formation", lineup = "numeric", Hard = "matrix"),
           function(obj, lineup, Hard) {
             ## error messages if used hardness matrix is not correct
-            if (sum(obj@hardness) > ncol(Hard)) stop("Used hardness points not reflected in hardness matrix.")
+            if (sum(obj@hardness) >= ncol(Hard)) stop("Used hardness points not reflected in hardness matrix.")
             if (!(all(apply(Hard, 2, sum) == 100))) stop("Sum of each column should be 100 of the used hardness matrix.")
               
             sumHard <- sum(obj@hardness)
@@ -282,7 +282,7 @@ setMethod("simRedCard",
             }
             
             if (numberCards <= 1) {
-              return(lineup)
+              return(list(lineup = lineup, numberRedCards = 0))
             }
             hard <- obj@hardness
             # allocation of the cards on the players
@@ -311,7 +311,7 @@ setMethod("simRedCard",
                                  prob = probPlayers)
             if (!any(duplicated(givenCards))) {
             # scenario of no red card
-                return(lineup)
+                return(list(lineup = lineup, numberRedCards = 0))
             } else {
               # scenario of at least one red card  
               punishedPlayers <- unique(givenCards[duplicated(givenCards)])
@@ -322,37 +322,37 @@ setMethod("simRedCard",
                 numb <- as.numeric(posNumb[2])
                 if (pos == "ST") {
                   strengthPunished <- obj@ST[numb]
-                  strengthNew <- round(strengthPunished * sample(90, 1)/90 )
+                  strengthNew <- round(strengthPunished * sample(90, 1)/90)
                   strengthLoss <- strengthPunished - strengthNew
                   lineup[5] <- max(0, lineup[5] - strengthLoss)
                 }
                 if (pos == "MF") {
                   strengthPunished <- obj@MF[numb]
-                  strengthNew <- round(strengthPunished * sample(90, 1)/90 )
+                  strengthNew <- round(strengthPunished * sample(90, 1)/90)
                   strengthLoss <- strengthPunished - strengthNew
                   lineup[4] <- max(0, lineup[4] - strengthLoss)
                 }
                 if (pos == "DF") {
                   strengthPunished <- obj@DF[numb]
-                  strengthNew <- round(strengthPunished * sample(90, 1)/90 )
+                  strengthNew <- round(strengthPunished * sample(90, 1)/90)
                   strengthLoss <- strengthPunished - strengthNew
                   lineup[3] <- max(0, lineup[3] - strengthLoss)
                 }
                 if (pos == "SW") {
                   strengthPunished <- obj@SW[numb]
-                  strengthNew <- round(strengthPunished * sample(90, 1)/90 )
+                  strengthNew <- round(strengthPunished * sample(90, 1)/90)
                   strengthLoss <- strengthPunished - strengthNew
                   lineup[2] <- max(0, lineup[2] - strengthLoss)
                 }
                 if (pos == "GK") {
                   strengthPunished <- obj@GK[numb]
-                  strengthNew <- round(strengthPunished * sample(90, 1)/90 )
+                  strengthNew <- round(strengthPunished * sample(90, 1)/90)
                   strengthLoss <- strengthPunished - strengthNew
                   lineup[1] <- max(0, lineup[1] - strengthLoss)
                 }
                   
               }
-              return(lineup)
+              return(list(lineup = lineup, numberRedCards = length(punishedPlayers)))
             }
           }
 )  

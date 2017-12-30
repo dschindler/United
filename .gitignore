@@ -30,3 +30,4 @@ unitedR/vignettes/*.csv
 ## the binary files which contain the package
 *.zip
 *.tar.gz
+.Rproj.user

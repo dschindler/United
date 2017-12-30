@@ -1,3 +1,4 @@
+#' @include simRedCard.R
 #' @include formation.R
 #' @include penaltyGoalsProb.R
 #' @include unitedSimClass.R
@@ -65,7 +66,14 @@ unitedSimOne <- function(home, away, r, penaltyProb = 0.1, preventGoalGK = 1/14,
     # simulate red cards
     homeLineupSim <- simRedCard(home, homeLineup, hardnessMatrix)
     awayLineupSim <- simRedCard(away, awayLineup, hardnessMatrix)
-  
+    
+    # save the number of red cards
+    redCardsHome <- homeLineupSim$numberRedCards 
+    redCardsAway <- awayLineupSim$numberRedCards
+    
+    homeLineupSim <- homeLineupSim$lineup
+    awayLineupSim <- awayLineupSim$lineup
+    
     chancesHome <- round((homeLineupSim[3:5] - awayLineupSim[5:3] - 
                           c(0, 0, awayLineupSim[2])) * c(1/4, 1/2, 1) + 0.00001)
     chancesHome <- sum(chancesHome[chancesHome > 0])
@@ -145,6 +153,11 @@ unitedSimOne <- function(home, away, r, penaltyProb = 0.1, preventGoalGK = 1/14,
     finalPossibleResults$tpAway <- ifelse(finalPossibleResults$goalsHome < finalPossibleResults$goalsAway, 1, 
                                         ifelse(finalPossibleResults$goalsHome == finalPossibleResults$goalsAway, 0.5, 
                                                0))
+    
+    # add red cards
+    finalPossibleResults$redCardsHome <- redCardsHome
+    finalPossibleResults$redCardsAway <- redCardsAway
+    
     # output
     output <- new("unitedSim", 
                 results = finalPossibleResults, 
@@ -155,6 +168,8 @@ unitedSimOne <- function(home, away, r, penaltyProb = 0.1, preventGoalGK = 1/14,
                 winProbabilityHome = round(sum((finalPossibleResults$pointsHome == 3) * finalPossibleResults$probability), digits = 4),
                 winProbabilityAway = round(sum((finalPossibleResults$pointsAway == 3) * finalPossibleResults$probability), digits = 4), 
                 tiedProbability = round(sum((finalPossibleResults$pointsAway == 1) * finalPossibleResults$probability), digits = 4),
+                averageRedCardsHome =  sum(finalPossibleResults$redCardsHome * finalPossibleResults$probability),
+                averageRedCardsAway =  sum(finalPossibleResults$redCardsAway * finalPossibleResults$probability),
                 home = home,
                 away = away)
   
@@ -168,6 +183,13 @@ unitedSimOne <- function(home, away, r, penaltyProb = 0.1, preventGoalGK = 1/14,
               # simulate red cards
               homeLineupSim <- simRedCard(home, homeLineup, hardnessMatrix)
               awayLineupSim <- simRedCard(away, awayLineup, hardnessMatrix)
+              
+              # save the number of red cards
+              redCardsHome <- homeLineupSim$numberRedCards 
+              redCardsAway <- awayLineupSim$numberRedCards
+              
+              homeLineupSim <- homeLineupSim$lineup
+              awayLineupSim <- awayLineupSim$lineup
               
               chancesHome <- round((homeLineupSim[3:5] - awayLineupSim[5:3] - 
                                       c(0, 0, awayLineupSim[2])) * c(1/4, 1/2, 1))
@@ -194,14 +216,14 @@ unitedSimOne <- function(home, away, r, penaltyProb = 0.1, preventGoalGK = 1/14,
               penaltyGoalsAway <- rbinom(1, penaltiesAway, penaltyProbGoalAway)
               goalsHomeGame <- rbinom(1, chancesHome, probGoalHome)
               goalsAwayGame <- rbinom(1, chancesAway, probGoalAway)
-              c(penaltyGoalsHome + goalsHomeGame, penaltyGoalsAway + goalsAwayGame)
+              c(penaltyGoalsHome + goalsHomeGame, penaltyGoalsAway + goalsAwayGame, redCardsHome, redCardsAway)
       }
     ))
     simulatedResults <- as.data.frame(simulatedResults)
-    colnames(simulatedResults) <- c("goalsHome", "goalsAway")
+    colnames(simulatedResults) <- c("goalsHome", "goalsAway", "redCardsHome", "redCardsAway")
     simulatedResults$probability <- 1/r
     
-    simulatedResults <- ddply(simulatedResults, .(goalsHome, goalsAway), summarize, 
+    simulatedResults <- ddply(simulatedResults, .(goalsHome, goalsAway, redCardsHome, redCardsAway), summarize, 
                                   probability = sum(probability))
     
     # sort results by probability of apprearance
@@ -224,6 +246,10 @@ unitedSimOne <- function(home, away, r, penaltyProb = 0.1, preventGoalGK = 1/14,
     simulatedResults$tpAway <- ifelse(simulatedResults$goalsHome < simulatedResults$goalsAway, 1, 
                                           ifelse(simulatedResults$goalsHome == simulatedResults$goalsAway, 0.5, 
                                                  0))
+    
+    # change colnames according to the not simulated case
+    simulatedResults <- simulatedResults[, c(1:2, 5:10, 3:4)]
+    
     # output
     output <- new("unitedSimR", 
                   results = simulatedResults, 
@@ -234,6 +260,8 @@ unitedSimOne <- function(home, away, r, penaltyProb = 0.1, preventGoalGK = 1/14,
                   winProbabilityHome = round(sum((simulatedResults$pointsHome == 3) * simulatedResults$probability), digits = 4),
                   winProbabilityAway = round(sum((simulatedResults$pointsAway == 3) * simulatedResults$probability), digits = 4), 
                   tiedProbability = round(sum((simulatedResults$pointsAway == 1) * simulatedResults$probability), digits = 4),
+                  averageRedCardsHome =  sum(simulatedResults$redCardsHome * simulatedResults$probability),
+                  averageRedCardsAway =  sum(simulatedResults$redCardsAway * simulatedResults$probability),
                   r = r,
                   home = home,
                   away = away)

@@ -10,7 +10,12 @@
 #' @param lineup lineup of the corresponding object \code{obj}
 #' @param Hard matrix of hardness to be used
 #' 
-#' @return \code{vector} of the adjusted lineup for the red card(s)
+#' @return \code{list} with two elements: 
+#' \itemize{
+#'  \item{\code{vector}}{ adjusted lineup for the red card(s)}
+#'  \item{\code{numeric}}{ number of red cards}
+#' }
+#'
 #'
 #' @name simRedCard
 NULL

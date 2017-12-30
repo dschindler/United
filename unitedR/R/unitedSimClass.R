@@ -29,6 +29,7 @@ setClass("unitedSim",
                    averageTrainingPointsAway = "numeric", averagePointsHome = "numeric",
                    averagePointsAway = "numeric", winProbabilityHome = "numeric",
                    winProbabilityAway = "numeric", tiedProbability = "numeric",
+                   averageRedCardsHome = "numeric", averageRedCardsAway = "numeric",
                    home = "formation", away = "formation"),
          validity = validateUnitedSim)
 
@@ -97,9 +98,9 @@ setMethod("show", "unitedSim", function(object) {
     }
     cat("\nThe most probable results are:\n") 
     if (nrow(object@results) >= 6) {
-      print(round(object@results[1:6, 1:4], digits = 3), row.names = FALSE)
+      print(round(object@results[1:6, c(1:4, 9, 10)], digits = 3), row.names = FALSE)
     } else {
-      print(round(object@results[, 1:4], digits = 3), row.names = FALSE)
+      print(round(object@results[, c(1:4, 9, 10)], digits = 3), row.names = FALSE)
     }  
     cat("\n")
   }  
@@ -130,9 +131,9 @@ setMethod("show", "unitedSimR", function(object) {
     }
     cat("\nThe most probable results are:\n") 
     if (nrow(object@results) >= 6) {
-      print(round(object@results[1:6, 1:4], digits = 3), row.names = FALSE)
+      print(round(object@results[1:6, c(1:4, 9, 10)], digits = 3), row.names = FALSE)
     } else {
-      print(round(object@results[, 1:4], digits = 3), row.names = FALSE)
+      print(round(object@results[, c(1:4, 9, 10)], digits = 3), row.names = FALSE)
     }  
     cat("\n")
   }  

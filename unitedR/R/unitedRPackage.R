@@ -18,7 +18,7 @@
 #' @aliases unitedR
 #' @title Assessment and Evaluation of United Formations
 #' @author David Schindler \email{dv.schindler@@gmail.com}
-#' @references \href{http://www.omido.de/}{omido} \href{http://www.schroepl.net/pbm/software/united/}{United} \href{http://schroepl.net/projekte/united_forum/}{United-Forum}
+#' @references \href{http://www.omido.de/}{omido}, \href{http://www.schroepl.net/pbm/software/united/}{United Software}, \href{http://schroepl.net/projekte/united_forum/}{United-Forum}
 #' @import methods
 #' @importFrom stats dbinom rbinom
 #' @import plyr

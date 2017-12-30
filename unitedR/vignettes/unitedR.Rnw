@@ -4,6 +4,7 @@
 \usepackage{graphicx, verbatim}
 \author{David Schindler}
 \begin{document}
+\SweaveOpts{concordance=TRUE}
 
 
 \title{Get started with \texttt{unitedR}}
