@@ -28,7 +28,7 @@ build(current.code)
 ## if (file.exists("./unitedR.pdf")) file.remove("./unitedR.pdf")
 ## system(paste('R CMD Rd2pdf ',  'unitedR'))
 
-install.packages("./unitedR_0.3.9000.tar.gz", repos = NULL, type = "source")
+install.packages("./unitedR_0.3.tar.gz", repos = NULL, type = "source")
 
 
 # require(randomizeR)

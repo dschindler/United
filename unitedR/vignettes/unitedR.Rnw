@@ -1,11 +1,11 @@
+\documentclass{article}
+
 %\VignetteEngine{knitr::knitr}
 %\VignetteIndexEntry{unitedR}
-\documentclass[11pt]{article}
-\usepackage{graphicx, verbatim}
-\author{David Schindler}
-\begin{document}
-\SweaveOpts{concordance=TRUE}
 
+\begin{document}
+
+\author{David Schindler}
 
 \title{Get started with \texttt{unitedR}}
 \date{\today}
