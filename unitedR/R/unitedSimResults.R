@@ -39,14 +39,14 @@ setClass("unitedSimResults",
 
 #' @rdname summary
 setMethod("summary", signature(object = "unitedSimResults"), function(object) {
-    summaries<- lapply(object@games, function(l) {
-        summary(l)
-      }
-    )  
-    summaries <- do.call("rbind", summaries)
-    rownames(summaries) <- 1:length(object@games)
-    summaries
+  summaries<- lapply(object@games, function(l) {
+    summary(l)
   }
+  )  
+  summaries <- do.call("rbind", summaries)
+  rownames(summaries) <- 1:length(object@games)
+  summaries
+}
 )
 
 # --------------------------------------------
@@ -54,32 +54,32 @@ setMethod("summary", signature(object = "unitedSimResults"), function(object) {
 # --------------------------------------------
 
 setMethod("show", "unitedSimResults", function(object) {
-    # iterate through all slots of the object
-    cat("\n")
-    cat("The used lineup home\n")
-    lineupHome <- toString(getLineup(object@games[[1]]@home))
-    lineupHome <- gsub(", ", "-", lineupHome)
-    cat("\t", lineupHome)
-    cat("\nwas compared to the following away lineups\n")
-    D <- summary(object)
-    D$home <- NULL
-    D$averageTrainingPointsAway <- NULL
-    D$averagePointsAway <- NULL
-    D$winProbabilityAway <- NULL
-    print(D, row.names = FALSE)
-    
-    #lineupsAway <- sapply(object@games, function(l) {
-    #    lineup <- toString(getLineup(l@away))
-    #    lineup <- gsub(", ", "-", lineup)
-    #  }
-    #)  
-    #winProbability <- sapply(object@games, function(l) {
-    #    round(l@winProbabilityHome, digits = 4)
-    #  }
-    #)  
-    #for (i in 1:length(lineupsAway)) {
-    #  cat("\t", lineupsAway[i], "\twinProbability:", winProbability[i])
-    #  cat("\n")
-    #}
-  }  
+  # iterate through all slots of the object
+  cat("\n")
+  cat("The used lineup home\n")
+  lineupHome <- toString(getLineup(object@games[[1]]@home))
+  lineupHome <- gsub(", ", "-", lineupHome)
+  cat("\t", lineupHome)
+  cat("\nwas compared to the following away lineups\n")
+  D <- summary(object)
+  D$home <- NULL
+  D$averageTrainingPointsAway <- NULL
+  D$averagePointsAway <- NULL
+  D$winProbabilityAway <- NULL
+  print(D, row.names = FALSE)
+  
+  #lineupsAway <- sapply(object@games, function(l) {
+  #    lineup <- toString(getLineup(l@away))
+  #    lineup <- gsub(", ", "-", lineup)
+  #  }
+  #)  
+  #winProbability <- sapply(object@games, function(l) {
+  #    round(l@winProbabilityHome, digits = 4)
+  #  }
+  #)  
+  #for (i in 1:length(lineupsAway)) {
+  #  cat("\t", lineupsAway[i], "\twinProbability:", winProbability[i])
+  #  cat("\n")
+  #}
+}  
 )
