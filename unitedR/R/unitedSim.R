@@ -49,7 +49,7 @@ NULL
 #' 
 #' 
 #' @export
-unitedSim <- function(home, ..., r, penaltyProb = 0.1, preventGoalGK = 1/14, preventGoalSW = 1/15, hardnessMatrix) {
+unitedSim <- function(home, ..., r, penaltyProb = 0.1, preventGoalGK = 1/14, preventGoalSW = 1/15, hardnessMatrix, L) {
   stopifnot(validObject(home), is(home, "formation"))
   
   ## set default value for hardness matrix
@@ -63,7 +63,12 @@ unitedSim <- function(home, ..., r, penaltyProb = 0.1, preventGoalGK = 1/14, pre
     stopifnot(is.matrix(hardnessMatrix))
   }
   
-  formations <- list(...)
+  if (!missing(L)) {
+    formations <- L
+  } else {
+    formations <- list(...)
+  }
+  
   if (!all(sapply(formations, function(x)  is(x, "formation"))))
     stop("Not all ... objects of class formation.")
   if (missing(r)) {

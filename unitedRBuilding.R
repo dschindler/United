@@ -1,6 +1,4 @@
-
-# setwd("C:\\Users\\David\\Desktop\\Git\\unitedR")
-
+setwd("C:\\Users\\David\\Desktop\\Git\\unitedR")
 
 library(knitr)
 library(devtools)
@@ -22,13 +20,14 @@ load_all(current.code)
 #run_examples(current.code)
 check(current.code)
 
-build(current.code)
+#build(current.code)
+system(paste('R CMD build ',  'unitedR'))
 
 # generate manual
-## if (file.exists("./unitedR.pdf")) file.remove("./unitedR.pdf")
-## system(paste('R CMD Rd2pdf ',  'unitedR'))
+# if (file.exists("./unitedR.pdf")) file.remove("./unitedR.pdf")
+# system(paste('R CMD Rd2pdf ',  'unitedR'))
 
-install.packages("./unitedR_0.3.tar.gz", repos = NULL, type = "source")
+install.packages("./unitedR_0.4.tar.gz", repos = NULL, type = "source")
 
 
 # require(randomizeR)

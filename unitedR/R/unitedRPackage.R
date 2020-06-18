@@ -3,8 +3,8 @@
 #' \tabular{ll}{
 #' Package: \tab unitedR \cr
 #' Type: \tab Package\cr
-#' Version: \tab 0.3.1 \cr
-#' Date: \tab 2018-01-03 \cr
+#' Version: \tab 0.4 \cr
+#' Date: \tab 2020-06-27 \cr
 #' License: \tab GPL (>= 2)\cr
 #' LazyLoad: \tab yes \cr
 #' }

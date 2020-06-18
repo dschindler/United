@@ -1,6 +1,10 @@
 ## ignore Rhistory
 .Rhistory
 
+# copies
+*copy*
+*Kopie*
+*kopie*
 
 ## emacs produces ~data
 ~*
