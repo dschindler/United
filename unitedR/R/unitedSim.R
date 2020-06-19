@@ -49,7 +49,8 @@ NULL
 #' 
 #' 
 #' @export
-unitedSim <- function(home, ..., r, penaltyProb = 0.1, preventGoalGK = 1/14, preventGoalSW = 1/15, hardnessMatrix, L) {
+unitedSim <- function(home, ..., r, penaltyProb = 0.1, preventGoalGK = 1/14, preventGoalSW = 1/15, 
+                      hardnessMatrix, L, overtime = FALSE) {
   stopifnot(validObject(home), is(home, "formation"))
   
   ## set default value for hardness matrix

@@ -37,7 +37,7 @@ utils::globalVariables(c("goalsHome", "goalsAway", "probability"))
 #' 
 #' @export
 unitedSimOne <- function(home, away, r, penaltyProb = 0.1, preventGoalGK = 1/14, preventGoalSW = 1/15, 
-                         hardnessMatrix) {
+                         hardnessMatrix, overtime = FALSE) {
   stopifnot(validObject(home), validObject(away), is(home, "formation"), 
             is(home, "formation"), is.numeric(preventGoalGK), is.numeric(preventGoalSW))
   if (preventGoalGK >= 1/13) stop("preventGoalGK must be smaller than 1/13.")
@@ -157,6 +157,13 @@ unitedSimOne <- function(home, away, r, penaltyProb = 0.1, preventGoalGK = 1/14,
     # add red cards
     finalPossibleResults$redCardsHome <- redCardsHome
     finalPossibleResults$redCardsAway <- redCardsAway
+    finalPossibleResults$draw <- ifelse(finalPossibleResults$goalsHome == finalPossibleResults$goalsAway, TRUE, FALSE)
+    finalPossibleResults$chancesHome <- chancesHome
+    finalPossibleResults$chancesAway <- chancesAway
+    finalPossibleResults$probGoalHome <- probGoalHome
+    finalPossibleResults$probGoalAway <- probGoalAway
+    finalPossibleResults$probPenSaveHome <- homeLineupSim[1] * 0.05
+    finalPossibleResults$probPenSaveAway <- awayLineupSim[1] * 0.05
     
     # output
     output <- new("unitedSim", 
@@ -216,17 +223,33 @@ unitedSimOne <- function(home, away, r, penaltyProb = 0.1, preventGoalGK = 1/14,
               penaltyGoalsAway <- rbinom(1, penaltiesAway, penaltyProbGoalAway)
               goalsHomeGame <- rbinom(1, chancesHome, probGoalHome)
               goalsAwayGame <- rbinom(1, chancesAway, probGoalAway)
-              c(penaltyGoalsHome + goalsHomeGame, penaltyGoalsAway + goalsAwayGame, redCardsHome, redCardsAway)
+              c(penaltyGoalsHome + goalsHomeGame, penaltyGoalsAway + goalsAwayGame, redCardsHome, redCardsAway,
+                chancesHome, chancesAway, probGoalHome, probGoalAway, 1-penaltyProbGoalAway, 1-penaltyProbGoalHome)
       }
     ))
     simulatedResults <- as.data.frame(simulatedResults)
-    colnames(simulatedResults) <- c("goalsHome", "goalsAway", "redCardsHome", "redCardsAway")
+    if (overtime) {
+      colnames(simulatedResults) <- c("goalsHome", "goalsAway", "redCardsHome", "redCardsAway",
+                                      'chancesHome', 'chancesAway', 'probGoalHome', 'probGoalAway', 
+                                      'probPenSaveHome', 'probPenSaveAway')
+    } else {
+      simulatedResults <- simulatedResults[,1:4]
+      colnames(simulatedResults) <- c("goalsHome", "goalsAway", "redCardsHome", "redCardsAway")
+    }
+
     simulatedResults$probability <- 1/r
     
-    simulatedResults <- ddply(simulatedResults, .(goalsHome, goalsAway, redCardsHome, redCardsAway), summarize, 
-                                  probability = sum(probability))
-    
-    # sort results by probability of apprearance
+    if (overtime) {
+      simulatedResults <- ddply(simulatedResults, 
+                                .(goalsHome, goalsAway, redCardsHome, redCardsAway, chancesHome, chancesAway,  probGoalHome, probGoalAway, probPenSaveHome, probPenSaveAway), 
+                                summarize, probability = sum(probability))
+    } else {
+      simulatedResults <- ddply(simulatedResults, 
+                                .(goalsHome, goalsAway, redCardsHome, redCardsAway), 
+                                summarize, probability = sum(probability))
+    }
+
+    # sort results by probability of appeareance
     simulatedResults <- simulatedResults[order(simulatedResults$probability, decreasing = TRUE), ]
     # add a cumsum of the probabilities
     simulatedResults$cumsumProb <- cumsum(simulatedResults$probability)
@@ -248,7 +271,14 @@ unitedSimOne <- function(home, away, r, penaltyProb = 0.1, preventGoalGK = 1/14,
                                                  0))
     
     # change colnames according to the not simulated case
-    simulatedResults <- simulatedResults[, c(1:2, 5:10, 3:4)]
+    if (overtime) {
+      simulatedResults <- simulatedResults[, c(1:2, 11:16, 3:10)]
+    } else {
+      simulatedResults <- simulatedResults[, c(1:2, 5:10, 3:4)]
+    }
+    
+    # add column for draw
+    simulatedResults$draw <- ifelse(simulatedResults$goalsHome == simulatedResults$goalsAway, TRUE, FALSE)
     
     # output
     output <- new("unitedSimR", 

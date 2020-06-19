@@ -13,9 +13,11 @@
 #' for yellow cards dependent on the used hardness
 #' @param home home team (an object of the \code{S4}class \code{formation})
 #' @param homeAdv \code{numeric} vector of length five with integers for the used hardness
-#' @param L List of \code{formations}
+#' @param L \code{list} with elements of class \code{formation}
 #' @param MF \code{numeric} vector for the strengths of the players in the 
 #' midfield
+#' @param overtime \code{logical}, if True overtime win probabilites are calculated. Only
+#' available if total hardness is zero or one.
 #' @param penaltyGoalProb probability of a goal by a singular penalty
 #' @param penaltyProb occurrence probability of a penalty
 #' @param posPenalties number of possible penalties in a game
