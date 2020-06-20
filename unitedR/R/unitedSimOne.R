@@ -4,7 +4,10 @@
 #' @include unitedSimClass.R
 NULL
 
-utils::globalVariables(c("goalsHome", "goalsAway", "probability"))
+utils::globalVariables(c("goalsHome", "goalsAway", "probability", 
+                         "chancesAwayDF", "chancesAwayMF", "chancesAwayST", 
+                         "chancesHomeDF", "chancesHomeMF",
+                         "chancesHomeST", "probPenSaveAway", "probPenSaveHome"))
 
 ###############################################
 # --------------------------------------------#
@@ -74,13 +77,13 @@ unitedSimOne <- function(home, away, r, penaltyProb = 0.1, preventGoalGK = 1/14,
     homeLineupSim <- homeLineupSim$lineup
     awayLineupSim <- awayLineupSim$lineup
     
-    chancesHome <- round((homeLineupSim[3:5] - awayLineupSim[5:3] - 
+    chancesHomeS <- round((homeLineupSim[3:5] - awayLineupSim[5:3] - 
                           c(0, 0, awayLineupSim[2])) * c(1/4, 1/2, 1) + 0.00001)
-    chancesHome <- sum(chancesHome[chancesHome > 0])
+    chancesHome <- sum(chancesHomeS[chancesHomeS > 0])
   
-    chancesAway <- round((awayLineupSim[3:5] - homeLineupSim[5:3] - 
+    chancesAwayS <- round((awayLineupSim[3:5] - homeLineupSim[5:3] - 
                           c(0, 0, homeLineupSim[2])) * c(1/4, 1/2, 1) + 0.00001)
-    chancesAway <- sum(chancesAway[chancesAway > 0])
+    chancesAway <- sum(chancesAwayS[chancesAwayS > 0])
   
     # possible penalties home
     posPenaltiesHome <- sum(away@hardness)
@@ -158,8 +161,12 @@ unitedSimOne <- function(home, away, r, penaltyProb = 0.1, preventGoalGK = 1/14,
     finalPossibleResults$redCardsHome <- redCardsHome
     finalPossibleResults$redCardsAway <- redCardsAway
     finalPossibleResults$draw <- ifelse(finalPossibleResults$goalsHome == finalPossibleResults$goalsAway, TRUE, FALSE)
-    finalPossibleResults$chancesHome <- chancesHome
-    finalPossibleResults$chancesAway <- chancesAway
+    finalPossibleResults$chancesHomeST <- max(c(chancesHomeS[3], 0))
+    finalPossibleResults$chancesHomeMF <- max(c(chancesHomeS[2], 0))
+    finalPossibleResults$chancesHomeDF <- max(c(chancesHomeS[1], 0))
+    finalPossibleResults$chancesAwayST <- max(c(chancesAwayS[3], 0))
+    finalPossibleResults$chancesAwayMF <- max(c(chancesAwayS[2], 0))
+    finalPossibleResults$chancesAwayDF <- max(c(chancesAwayS[1], 0))
     finalPossibleResults$probGoalHome <- probGoalHome
     finalPossibleResults$probGoalAway <- probGoalAway
     finalPossibleResults$probPenSaveHome <- homeLineupSim[1] * 0.05
@@ -198,13 +205,13 @@ unitedSimOne <- function(home, away, r, penaltyProb = 0.1, preventGoalGK = 1/14,
               homeLineupSim <- homeLineupSim$lineup
               awayLineupSim <- awayLineupSim$lineup
               
-              chancesHome <- round((homeLineupSim[3:5] - awayLineupSim[5:3] - 
+              chancesHomeS <- round((homeLineupSim[3:5] - awayLineupSim[5:3] - 
                                       c(0, 0, awayLineupSim[2])) * c(1/4, 1/2, 1))
-              chancesHome <- sum(chancesHome[chancesHome > 0])
+              chancesHome <- sum(chancesHomeS[chancesHomeS > 0])
               
-              chancesAway <- round((awayLineupSim[3:5] - homeLineupSim[5:3] - 
+              chancesAwayS <- round((awayLineupSim[3:5] - homeLineupSim[5:3] - 
                                       c(0, 0, homeLineupSim[2])) * c(1/4, 1/2, 1))
-              chancesAway <- sum(chancesAway[chancesAway > 0])
+              chancesAway <- sum(chancesAwayS[chancesAwayS > 0])
               
               #  penalties home
               penaltiesHome <- rbinom(1, sum(away@hardness), penaltyProb)
@@ -224,13 +231,18 @@ unitedSimOne <- function(home, away, r, penaltyProb = 0.1, preventGoalGK = 1/14,
               goalsHomeGame <- rbinom(1, chancesHome, probGoalHome)
               goalsAwayGame <- rbinom(1, chancesAway, probGoalAway)
               c(penaltyGoalsHome + goalsHomeGame, penaltyGoalsAway + goalsAwayGame, redCardsHome, redCardsAway,
-                chancesHome, chancesAway, probGoalHome, probGoalAway, 1-penaltyProbGoalAway, 1-penaltyProbGoalHome)
+                max(c(chancesHomeS[3], 0)), max(c(chancesHomeS[2], 0)), max(c(chancesHomeS[1], 0)), 
+                max(c(chancesAwayS[3], 0)), max(c(chancesAwayS[2], 0)), max(c(chancesAwayS[1], 0)), 
+                probGoalHome, probGoalAway,
+                1-penaltyProbGoalAway, 1-penaltyProbGoalHome)
       }
     ))
     simulatedResults <- as.data.frame(simulatedResults)
     if (overtime) {
       colnames(simulatedResults) <- c("goalsHome", "goalsAway", "redCardsHome", "redCardsAway",
-                                      'chancesHome', 'chancesAway', 'probGoalHome', 'probGoalAway', 
+                                      'chancesHomeST', 'chancesHomeMF', 'chancesHomeDF',
+                                      'chancesAwayST', 'chancesAwayMF', 'chancesAwayDF', 
+                                      'probGoalHome', 'probGoalAway', 
                                       'probPenSaveHome', 'probPenSaveAway')
     } else {
       simulatedResults <- simulatedResults[,1:4]
@@ -241,7 +253,7 @@ unitedSimOne <- function(home, away, r, penaltyProb = 0.1, preventGoalGK = 1/14,
     
     if (overtime) {
       simulatedResults <- ddply(simulatedResults, 
-                                .(goalsHome, goalsAway, redCardsHome, redCardsAway, chancesHome, chancesAway,  probGoalHome, probGoalAway, probPenSaveHome, probPenSaveAway), 
+                                .(goalsHome, goalsAway, redCardsHome, redCardsAway, chancesHomeST, chancesHomeMF, chancesHomeDF, chancesAwayST, chancesAwayMF, chancesAwayDF, probGoalHome, probGoalAway, probPenSaveHome, probPenSaveAway), 
                                 summarize, probability = sum(probability))
     } else {
       simulatedResults <- ddply(simulatedResults, 
@@ -272,7 +284,7 @@ unitedSimOne <- function(home, away, r, penaltyProb = 0.1, preventGoalGK = 1/14,
     
     # change colnames according to the not simulated case
     if (overtime) {
-      simulatedResults <- simulatedResults[, c(1:2, 11:16, 3:10)]
+      simulatedResults <- simulatedResults[, c(1:2, 15:20, 3:14)]
     } else {
       simulatedResults <- simulatedResults[, c(1:2, 5:10, 3:4)]
     }

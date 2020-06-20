@@ -2,6 +2,7 @@
 
 export(formation)
 export(getLineup)
+export(overtime)
 export(penaltyGoalsProb)
 export(simRedCard)
 export(summary)

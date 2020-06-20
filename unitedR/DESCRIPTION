@@ -19,6 +19,7 @@ Collate:
     'simRedCard.R'
     'getLineup.R'
     'formation.R'
+    'overtime.R'
     'penaltyGoalsProb.R'
     'summary.R'
     'unitedRPackage.R'

@@ -4,6 +4,8 @@
 #' used in the \code{unitedR} package.
 #'
 #' @param away away team (an object of the \code{S4}class \code{formation})
+#' @param chancesAway goalscoring chances of away team
+#' @param chancesHome goalscoring chances of home team
 #' @param DF \code{numeric} vector for the strengths of the players in the 
 #' defense
 #' @param formation object of the \code{S4}class \code{formation}
@@ -25,6 +27,8 @@
 #' probability of preventing a goal by the goalkeeper
 #' @param preventGoalSW factor multiplicied with the strength of the SW for computing the 
 #' probability of preventing a goal by the sweeper
+#' @param probGoalAway probability of scoring a goal for away team
+#' @param probGoalHome probability of scoring a goal for home team
 #' @param r number of replications for the simulation of hardness and penalties, can 
 #' be \code{missing} (exact results will be computed)
 #' @param ST \code{numeric} vector of integers for the strenghts of the strikers
