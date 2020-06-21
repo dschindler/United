@@ -7,7 +7,6 @@ library(testthat)
 # For new Packages use this
 # create("unitedR")
 
-
 current.code <- as.package("unitedR")
 # devtools::build_vignettes()
 # devtools::use_vignette("unitedR.Rnw")

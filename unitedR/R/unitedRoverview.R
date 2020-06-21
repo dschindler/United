@@ -21,6 +21,8 @@
 #' @param overtime \code{logical}, if True overtime win probabilites are calculated. Only
 #' available if total hardness is zero or one.
 #' @param penaltyGoalProb probability of a goal by a singular penalty
+#' @param penaltyProbGoalAway probability of a goal by a singular penalty for away team
+#' @param penaltyProbGoalHome probability of a goal by a singular penalty for home team
 #' @param penaltyProb occurrence probability of a penalty
 #' @param posPenalties number of possible penalties in a game
 #' @param preventGoalGK factor multiplicied with the strength of the GK for computing the 
