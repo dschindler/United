@@ -94,7 +94,7 @@ setMethod("show", "unitedSim", function(object) {
     names <- slotNames(object)
     names <- names[!(names %in% c("results", "home", "away"))]
     for (name in names) {
-      cat("\t", name, "=", slot(object, name), "\n")
+      cat("\t", name, "=", round(slot(object, name), digits = 4), "\n")
     }
     cat("\nThe most probable results are:\n") 
     if (nrow(object@results) >= 6) {

@@ -59,16 +59,16 @@ overtime <- function(chancesHome, chancesAway, probGoalHome, probGoalAway) {
 #' \code{winProbabilityAway}).
 #' 
 #' @export
-penaltyShootout <- function(penaltyProbGoalHome, penaltyProbGoalAway, initial=5) {
-  if(all(c(penaltyProbGoalHome, penaltyProbGoalAway) == 0)) {
-    penaltyProbGoalHome <- penaltyProbGoalAway <- 0.5
+penaltyShootout <- function(probPenaltySaveHome, probPenaltySaveAway, initial=5) {
+  if(all(c(probPenaltySaveHome, probPenaltySaveAway) == 0)) {
+    probPenaltySaveHome <- probPenaltySaveAway <- 0.5
   }
-  if(all(c(penaltyProbGoalHome, penaltyProbGoalAway) == 1)) {
-    penaltyProbGoalHome <- penaltyProbGoalAway <- 0.5
+  if(all(c(probPenaltySaveHome, probPenaltySaveAway) == 1)) {
+    probPenaltySaveHome <- probPenaltySaveAway <- 0.5
   }
   
-  qHome <- 1-penaltyProbGoalHome
-  qAway <- 1-penaltyProbGoalAway
+  qHome <- 1-probPenaltySaveHome
+  qAway <- 1-probPenaltySaveAway
   
   # possible paths
   e <- vector('list', 0)
@@ -99,10 +99,13 @@ penaltyShootout <- function(penaltyProbGoalHome, penaltyProbGoalAway, initial=5)
   pathsTransWoD <- pathsTrans[!duplicated(pathsTrans), ]
   
   pathsProbs <- pathsTransWoD
-  pathsProbs[, (0:(initial-1) * 2 + 1)][pathsProbs[, (0:(initial-1) * 2 + 1)] == 0] <- qHome
-  pathsProbs[, (0:(initial-1) * 2 + 1)][pathsProbs[, (0:(initial-1) * 2 + 1)] == 1] <- penaltyProbGoalHome
-  pathsProbs[, (1:initial)*2][pathsProbs[, (1:initial)*2] == 0] <- qAway
-  pathsProbs[, (1:initial)*2][pathsProbs[, (1:initial)*2] == -1] <- penaltyProbGoalAway
+  # rename cols
+  pathsProbs[pathsProbs == 0] <- "noGoal"
+  pathsProbs[pathsProbs %in% c(1, -1)] <- "Goal"
+  pathsProbs[, (0:(initial-1) * 2 + 1)][pathsProbs[, (0:(initial-1) * 2 + 1)] == 'noGoal'] <- qHome
+  pathsProbs[, (0:(initial-1) * 2 + 1)][pathsProbs[, (0:(initial-1) * 2 + 1)] == 'Goal'] <- probPenaltySaveHome
+  pathsProbs[, (1:initial)*2][pathsProbs[, (1:initial)*2] == 'noGoal'] <- qAway
+  pathsProbs[, (1:initial)*2][pathsProbs[, (1:initial)*2] == 'Goal'] <- probPenaltySaveAway
   pathsProbs[pathsProbs == -99] <- 1    
   
   # fill pathsTrans with probabilites
@@ -118,12 +121,11 @@ penaltyShootout <- function(penaltyProbGoalHome, penaltyProbGoalAway, initial=5)
   outAfter5 <- ddply(probDist, .(outcome), summarize, probability = sum(as.numeric(as.character(probability))))
   
   # further penalties after draw
-  winHome <- penaltyProbGoalHome/(penaltyProbGoalHome + penaltyProbGoalAway)
+  winHome <- probPenaltySaveHome/(probPenaltySaveHome + probPenaltySaveAway)
   winAway <- 1 - winHome
   
   out <- list(winProbabilityHome = outAfter5$probability[outAfter5$outcome == 'winHome'] + outAfter5$probability[outAfter5$outcome == 'draw'] * winHome,
               winProbabilityAway = outAfter5$probability[outAfter5$outcome == 'winAway'] + outAfter5$probability[outAfter5$outcome == 'draw'] * winAway)
-  
   
   return(out)
 }
