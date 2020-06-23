@@ -26,12 +26,7 @@ system(paste('R CMD build ',  'unitedR'))
 # if (file.exists("./unitedR.pdf")) file.remove("./unitedR.pdf")
 # system(paste('R CMD Rd2pdf ',  'unitedR'))
 
-install.packages("./unitedR_0.4.tar.gz", repos = NULL, type = "source")
-# install.packages("./unitedR_0.4.tar", repos = NULL, type = "source")
-
-
-# install.packages("C:/Users/David/Desktop/Git/unitedR/unitedR_0.4.tar.gz",
-#                  repos = NULL, type = "source")
+install.packages("./unitedR_0.4.tar", repos = NULL, type = "source")
 
 
 # vignette(package = "unitedR")

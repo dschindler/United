@@ -36,7 +36,10 @@ utils::globalVariables(c("goalsHome", "goalsAway", "probability",
 #'  hardness = c(0,0,0,0,1))
 #' set.seed(123)
 #' unitedSimOne(home, away)
-#' # you can even simulated the game
+#' # results with overtime
+#' # Note: Only key statistics are adjusted for overtime
+#' unitedSimOne(home, away, overtime = TRUE)
+#' # simulating the game
 #' unitedSimOne(home, away, r = 100)
 #'
 #' @export
