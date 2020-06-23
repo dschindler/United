@@ -13,19 +13,19 @@ NULL
 # --------------------------------------------
 
 #' Simulating a formation
-#' 
+#'
 #' Simulates a formation against another formations (several formations of away are possible).
-#' 
+#'
 #' @inheritParams overview
 #' @param ... several objects of the class \code{formation}
 #'
 #' @return Creates an object of the \code{unitedSim} class.
-#' 
+#'
 #' @seealso \code{\link{unitedSimOne}}
-#' 
-#' @examples 
+#'
+#' @examples
 #' home <- formation(10, NA, c(7,5,3), c(8,8), c(10,10,8))
-#' away <- formation(5, 8, c(8,8), c(10,10), c(10,10,10), 
+#' away <- formation(5, 8, c(8,8), c(10,10), c(10,10,10),
 #'  hardness = c(0,0,0,0,1))
 #' set.seed(123)
 #' unitedSim(home, away)
@@ -46,13 +46,13 @@ NULL
 #' 10,30,40,20,0,0,0,0,0,20,40,30,10,0,0,0,0,10,20,
 #' 40,20,10,0,0,0,0,10,40,20,20,10), nrow = 8,
 #' dimnames = dimNams))
-#' 
-#' 
+#'
+#'
 #' @export
-unitedSim <- function(home, ..., r, penaltyProb = 0.1, preventGoalGK = 1/14, preventGoalSW = 1/15, 
+unitedSim <- function(home, ..., r, penaltyProb = 0.1, preventGoalGK = 1/14, preventGoalSW = 1/15,
                       hardnessMatrix, L, overtime = FALSE) {
   stopifnot(validObject(home), is(home, "formation"))
-  
+
   ## set default value for hardness matrix
   if (missing(hardnessMatrix)) {
     hardnessMatrix <- matrix(c(90,10,0,0,0,0,0,0,70,30,0,0,0,0,0,0,50,40,10,
@@ -63,23 +63,23 @@ unitedSim <- function(home, ..., r, penaltyProb = 0.1, preventGoalGK = 1/14, pre
   } else {
     stopifnot(is.matrix(hardnessMatrix))
   }
-  
+
   if (!missing(L)) {
     formations <- L
   } else {
     formations <- list(...)
   }
-  
+
   if (!all(sapply(formations, function(x)  is(x, "formation"))))
     stop("Not all ... objects of class formation.")
   if (missing(r)) {
     if (length(formations) == 1) {
-      return(unitedSimOne(home, formations[[1]], penaltyProb = penaltyProb, preventGoalGK = preventGoalGK, 
-                          preventGoalSW = preventGoalSW, hardnessMatrix = hardnessMatrix))
+      return(unitedSimOne(home, formations[[1]], penaltyProb = penaltyProb, preventGoalGK = preventGoalGK,
+                          preventGoalSW = preventGoalSW, hardnessMatrix = hardnessMatrix, overtime = overtime))
     } else {
       games <- lapply(formations, function(formation) {
-          unitedSimOne(home, formation, penaltyProb = penaltyProb, preventGoalGK = preventGoalGK, 
-                       preventGoalSW = preventGoalSW, hardnessMatrix = hardnessMatrix)  
+          unitedSimOne(home, formation, penaltyProb = penaltyProb, preventGoalGK = preventGoalGK,
+                       preventGoalSW = preventGoalSW, hardnessMatrix = hardnessMatrix, overtime = overtime)
         }
       )
     }
@@ -88,14 +88,14 @@ unitedSim <- function(home, ..., r, penaltyProb = 0.1, preventGoalGK = 1/14, pre
     stopifnot(is.numeric(r), round(r) == r, length(r) == 1)
       if (length(formations) == 1) {
         return(unitedSimOne(home, formations[[1]], r = r, penaltyProb = penaltyProb, preventGoalGK = preventGoalGK,
-                            preventGoalSW = preventGoalSW, hardnessMatrix = hardnessMatrix))
+                            preventGoalSW = preventGoalSW, hardnessMatrix = hardnessMatrix, overtime = overtime))
       } else {
         games <- lapply(formations, function(formation) {
-          unitedSimOne(home, formation, r = r, penaltyProb = penaltyProb, preventGoalGK = preventGoalGK, 
-                       preventGoalSW = preventGoalSW, hardnessMatrix = hardnessMatrix)  
+          unitedSimOne(home, formation, r = r, penaltyProb = penaltyProb, preventGoalGK = preventGoalGK,
+                       preventGoalSW = preventGoalSW, hardnessMatrix = hardnessMatrix, overtime = overtime)
         }
       )
     }
     return(new("unitedSimResults", games = games))
-  }  
+  }
 }
